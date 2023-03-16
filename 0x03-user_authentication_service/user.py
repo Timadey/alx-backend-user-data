@@ -1,4 +1,4 @@
-#!/usr/bin/env/python3
+#!/usr/bin env/python3
 """A user Uer model"""
 from sqlalchemy import Column, Integer, String
 
