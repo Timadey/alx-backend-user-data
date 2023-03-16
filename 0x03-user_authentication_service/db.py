@@ -45,9 +45,7 @@ class DB:
         """
         try:
             auser = self._session.query(User).filter_by(**kwargs).one()
-        except NoResultFound:
-            raise
-        except InvalidRequestError:
+        except NoResultFound or InvalidRequestError:
             raise
         return auser
 
@@ -58,8 +56,9 @@ class DB:
         try:
             auser = self.find_user_by(id=user_id)
             for k, v in kwargs.items():
-                auser.__setattr__(k, v)
+                if hasattr(auser, k):
+                    auser.__setattr__(k, v)
             self.__session.add(auser)
             self.__session.commit()
-        except ValueError:
-            raise
+        except NoResultFound or ValueError:
+            raise ValueError
